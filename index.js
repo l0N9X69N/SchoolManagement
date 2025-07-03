@@ -2,12 +2,14 @@
 const express = require("express");
 const { Pool } = require("pg");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 dotenv.config(); // Đọc biến môi trường từ .env
 app.use(express.json()); // Cho phép đọc JSON từ body POST
+app.use(cors());
 
 // Thiết lập kết nối PostgreSQL
 // Tạo pool kết nối
