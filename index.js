@@ -10,12 +10,23 @@ dotenv.config(); // Đọc biến môi trường từ .env
 app.use(express.json()); // Cho phép đọc JSON từ body POST
 
 // Thiết lập kết nối PostgreSQL
+// Tạo pool kết nối
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false, // Bắt buộc với Render
+    rejectUnauthorized: false, // Render yêu cầu phải có dòng này
   },
 });
+
+// ✅ Kiểm tra kết nối DB khi server khởi động
+pool
+  .connect()
+  .then(() => {
+    console.log("✅ Kết nối đến database thành công!");
+  })
+  .catch((err) => {
+    console.error("❌ Không thể kết nối đến database:", err);
+  });
 
 // Route: Lấy danh sách sinh viên từ DB (SELECT)
 app.get("/student", async (req, res) => {
